@@ -46,6 +46,7 @@ async def validation_exception_handler(
 
 @app.post("/places/search", response_model=SearchResponse)
 def places_search(request: SearchRequest) -> SearchResponse:
+    logger.info("Processing your request...")
     return search_places(request)
 
 
