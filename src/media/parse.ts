@@ -29,7 +29,18 @@ function isValidMedia(candidate: string, opts?: { allowSpaces?: boolean }) {
   }
 
   // Local paths: only allow safe relative paths starting with ./ that do not traverse upwards.
-  return candidate.startsWith("./") && !candidate.includes("..");
+  if (candidate.startsWith("./") && !candidate.includes("..")) {
+    return true;
+  }
+
+  // Allow temp directory paths for TTS output
+  if (candidate.startsWith("/var/folders/") || candidate.startsWith("/tmp/")) {
+    if (/\.(opus|mp3|ogg|wav|m4a|webm|mp4|jpg|jpeg|png|gif|webp)$/i.test(candidate)) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 function unwrapQuoted(value: string): string | undefined {
